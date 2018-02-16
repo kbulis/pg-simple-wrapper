@@ -1,6 +1,4 @@
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-
-# pg-simple-wrapper
+# pg-simple-wrapper [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 Simple wrapper around postgresql transactions using pg.
 
 ## Install
