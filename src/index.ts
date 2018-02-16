@@ -22,11 +22,11 @@ export class Xaxion {
   constructor(private client: persist.PoolClient) {
   }
 
-  async select<T>(M: { new(x: Xaxion, id: number, props: any): T }, idLabel: string, options: { props: string, where: string, extra?: { prop: any, pred: string }[], order?: string, limit?: number, index?: number, param: any[]}): Promise<T[]> {
-    const { props, where, extra, order, limit, index, param } = options;
+  async select<T>(M: { new(x: Xaxion, id: number, props: any): T }, idLabel: string, options: { props: string, where: string, extra?: { prop: any, pred: string }[], order?: string, sorts?: { spec: string, sort: string }[], limit?: number, index?: number, param: any[]}): Promise<T[]> {
+    const { props, where, extra, order, sorts, limit, index, param } = options;
 
     if (props) {
-      let query: string = `select ${props} where ${where}${extra ? extra.map((e) => e.prop ? e.pred : '').reduce((p, c) => c ? (p + ' and ' + c) : p, '') : ``}${order ? ` order by ${order}` : ``}${limit ? ` limit ${limit} offset ${index}` : ``};`;
+      let query: string = `select ${props} where ${where}${extra ? extra.map((e) => e.prop ? e.pred : '').reduce((p, c) => c ? (p + ' and ' + c) : p, '') : ``}${order && sorts ? `${sorts.filter((s) => s.spec === order).map((s) => s.sort).reduce((p, c) => (p === '' ? ' order by ' : ', ') + p + c, '')}` : ``}${limit ? ` limit ${limit} offset ${index}` : ``};`;
 
       if (query.indexOf('$#') > 0) {
         for (let cur = 0, nxt = 0, idx = 1; (nxt = query.indexOf('$#', cur)) > 0; ++idx) {
@@ -37,7 +37,7 @@ export class Xaxion {
       try {
         const result = await this.client.query(query, [
           ...(param ? param : []),
-          ...(extra ? extra.filter((e) => e.prop) : []),
+          ...(extra ? extra.filter((e) => e.prop).map((e) => e.prop) : []),
         ]);
 
         return result.rows.map(row => new M(this, row[idLabel], {
@@ -68,7 +68,7 @@ export class Xaxion {
       try {
         const result = await this.client.query(query, [
           ...(param ? param : []),
-          ...(extra ? extra.filter((e) => e.prop) : []),
+          ...(extra ? extra.filter((e) => e.prop).map((e) => e.prop) : []),
         ]);
 
         if (result.rowCount > 0) {
@@ -131,7 +131,6 @@ export class Xaxion {
   }
 
   async release(): Promise<void> {
-    await this.client.query('rollback');
     this.client.release();
   }
 
