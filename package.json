@@ -3,11 +3,18 @@
   "version": "0.0.1",
   "description": "Simple wrapper around postgresql transactions using pg.",
   "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "repository": "https://github.com/kbulis/d64-filter.git",
   "author": "kirk.d.bulis@gmail.com",
+  "keywords": [
+    "postgresql",
+    "pg",
+    "typescript"
+  ],
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "echo Nothing to test at this time..."
   },
   "devDependencies": {
     "@types/pg": "^7.4.4",
