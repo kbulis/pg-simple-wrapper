@@ -1,4 +1,4 @@
-[![npm][npm]][npm-url] [![deps][deps]][deps-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
 # pg-simple-wrapper
 Simple wrapper around postgresql transactions using pg.
@@ -71,8 +71,13 @@ export class ModelPooled implements Pooled {
 }
 ```
 
-[npm]: https://img.shields.io/npm/v/pg-simple-wrapper.svg
-[npm-url]: https://npmjs.com/package/pg-simple-wrapper
+## License
 
-[deps]: https://david-dm.org/kbulis/pg-simple-wrapper.svg
-[deps-url]: https://david-dm.org/kbulis/pg-simple-wrapper
+MIT © [Kirk Bulis](http://github.com/kbulis)
+
+[npm-image]: https://badge.fury.io/js/pg-simple-wrapper.svg
+[npm-url]: https://npmjs.org/package/pg-simple-wrapper
+[travis-image]: https://travis-ci.org/kbulis/pg-simple-wrapper.svg?branch=master
+[travis-url]: https://travis-ci.org/kbulis/pg-simple-wrapper
+[daviddm-image]: https://david-dm.org/kbulis/pg-simple-wrapper.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/kbulis/pg-simple-wrapper
