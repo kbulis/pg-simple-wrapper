@@ -1,6 +1,6 @@
 {
   "name": "pg-simple-wrapper",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "Simple wrapper around postgresql transactions using pg.",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

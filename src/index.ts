@@ -122,6 +122,67 @@ export class Xaxion {
     throw new Error('Missing options');
   }
 
+  async update<T>(M: { new(x: Xaxion, id: number, props: any): T }, idLabel: string, options: { props: string, where: string, param: any[]}): Promise<T> {
+    const { props, where, param } = options;
+
+    if (props) {
+      let query: string = `update ${props} where ${where} returning *;`;
+
+      if (query.indexOf('$#') > 0) {
+        for (let cur = 0, nxt = 0, idx = 1; (nxt = query.indexOf('$#', cur)) > 0; ++idx) {
+          query = query.slice(0, nxt) + '$' + idx + query.slice(nxt + 2);
+        }
+      }
+
+      try {
+        const result = await this.client.query(query, [
+          ...(param ? param : []),
+        ]);
+
+        if (result.rowCount > 0) {
+          return new M(this, result.rows[0][idLabel], {
+            ...result.rows[0].value,
+            ...result.rows[0],
+          });
+        }
+      }
+      catch (eX) {
+        throw eX;
+      }
+
+      throw new Error('Entity not updated');
+    }
+
+    throw new Error('Missing options');
+  }
+  
+  async delete(options: { props: string, where: string, param: any[]}): Promise<void> {
+    const { props, where, param } = options;
+
+    if (props) {
+      let query: string = `delete from ${props} where ${where};`;
+
+      if (query.indexOf('$#') > 0) {
+        for (let cur = 0, nxt = 0, idx = 1; (nxt = query.indexOf('$#', cur)) > 0; ++idx) {
+          query = query.slice(0, nxt) + '$' + idx + query.slice(nxt + 2);
+        }
+      }
+
+      try {
+        const result = await this.client.query(query, [
+          ...(param ? param : []),
+        ]);
+
+        return;
+      }
+      catch (eX) {
+        throw eX;
+      }
+    }
+
+    throw new Error('Missing options');
+  }
+
   async fetch(idLabel: string, query: string, values?: any[] | undefined): Promise<any> {
     return (await this.client.query(query, values)).rows[0][idLabel];
   }
